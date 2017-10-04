@@ -1,0 +1,40 @@
+.jumbotron
+  .row
+    .col-md-9
+      %h4
+        %em Если вы готовы приятно удивиться,
+      %h4
+        %em то гостиница Измайлово это то, что вы искали.
+      %h4
+        %em Позвольте нам сделать ваше пребывание в Москве - праздником!
+      %br
+      %h5
+        %strong Бронирование номеров +7 (495) 771-19-01
+      = link_to 'Добавить гостиницу', new_inn_path, class: 'btn btn-primary btn-lg' if can? :create, Inn
+    .col-md-3
+      = image_tag 'logo.png'
+
+.jumbotron
+  .row
+    .col-md-1
+    .col-md-10
+      %table.table
+        %tbody
+          - @inns.each do |inn|
+            %td= link_to (image_tag inn.image.for_index), inn_path(inn)
+            %td
+              %h4
+                %strong
+                  = link_to "Измайлово #{ inn.name }", inn_path(inn), style:'color: inherit; text-decoration: none;'
+              %p
+                = "#{ inn.rooms.avaliable.count } #{ Russian.p(inn.rooms.avaliable.count, "номер свободен", "номера свободны", "номеров свободно")} "
+              %p
+                = "#{ inn.rooms.unavaliable.count } #{ Russian.p(inn.rooms.unavaliable.count, "номер забронирован", "номера забронированы", "номеров забронировано")}"
+            %td
+              %p
+                = link_to 'Редактировать', edit_inn_path(inn), class: 'btn btn-info' if can? :update, Inn
+              %p
+                = link_to 'Удалить', inn_path(inn), method: :delete, class: 'btn btn-danger' if can? :destroy, Inn
+            %tr
+    .col-md-1
+  = image_tag 'footer2.svg', width: "100%"

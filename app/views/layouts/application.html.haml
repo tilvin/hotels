@@ -1,0 +1,26 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %title Hotel
+    = csrf_meta_tags
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+  %body
+    .container
+      %nav.navbar.navbar-default
+        .container-fluid
+          .navbar-header
+            %strong= link_to 'Гостиничный комплекс Измайлово', root_path, class: 'navbar-brand'
+            %ul.nav.navbar-nav
+              - Inn.all.each do |inn|
+                %li= link_to inn.name, inn_path(inn)
+          #navbar.collapse.navbar-collapse
+            %ul.nav.navbar-nav.navbar-right
+              - if current_user
+                %li{style: 'padding-top: 15px;'}= "Здравствуйте, #{current_user.name}"
+                %li= link_to "Выйти", :logout, method: :post
+              - else
+                %li= link_to 'Регистрация', new_user_path
+                %li= link_to "Войти", :login
+      = yield

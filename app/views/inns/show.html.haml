@@ -1,0 +1,26 @@
+.jumbotron
+  .row
+    .col-md-4
+      = image_tag @inn.image.for_show, class: 'img-circle'
+    .col-md-8
+      %h3
+        = "Измайлово #{ @inn.name }"
+      %p.lead.text-justify{style: 'font-size: 20px'}
+        Если вы решили забронировать гостиницу Измайлово, можно с уверенностью сказать, что это правильный выбор. Отменная кухня, вежливый персонал, стильные номера с современной мебелью, эксклюзивный 13-й и 6-й VIP этажи. Сотрудники отеля стараются держать марку, чтобы девиз «Первый среди равных» не был пустым лозунгом. Забронируйте гостиницу Измайлово, чтобы стать нашим постоянным гостем.
+.jumbotron
+  %table.table
+    %tbody
+      - @rooms.each do |room|
+        %tr
+          %td{class: "#{'danger' if !room.is_free}"}
+            %p
+              = link_to "Комната № #{ room.number }", inn_room_path(@inn, room), style:'color: inherit; text-decoration: none;'
+          - if !room.is_free
+            %td.danger
+              - if can? :destroy, Booking
+                = link_to 'Снять бронь', booking_path(room.bookings.last), method: :delete, class: 'btn btn-danger'
+              - else
+                номер занят
+          - else
+            %td
+  = image_tag 'footer2.svg', width: "100%"

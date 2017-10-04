@@ -1,0 +1,12 @@
+%blockquote{id: "comment_#{comment.id}"}
+  %h4
+    = comment.text
+  %footer
+    %em
+      = comment.user.try(:name)
+      = Russian::strftime(comment.created_at, "%d %B %Y")
+  %br
+
+  %p
+    = link_to 'Удалить', inn_room_comment_path(@room.inn, @room, comment), method: :delete, remote: true, class: 'btn btn-danger btn-xs' if can? :destroy, comment
+    = link_to 'Редактировать', edit_inn_room_comment_path(@room.inn, @room, comment), remote: true, class: 'btn btn-danger btn-xs' if can? :update, comment

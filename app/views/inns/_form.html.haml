@@ -1,0 +1,21 @@
+.jumbotron
+  .row
+    .col-md-3
+    .col-md-6
+      = form_for @inn, html: { class: 'form-horizontal' }, role: 'form' do |f|
+        .form-group
+          = f.label 'Название гостиницы'
+          = f.text_field :name, class: 'form-control'
+          = show_errors(f.object.errors, :name)
+        - if !@inn.persisted?
+          .form-group
+            = f.label 'Количество комнат'
+            = f.text_field :room_count, class: 'form-control'
+            = show_errors(f.object.errors, :room_count)
+        .form-group
+          = f.label 'Фото'
+          = f.file_field :image, class: 'form-control'
+        .form-group
+          = f.submit 'Сохранить', class: 'btn btn-primary'
+          = link_to 'Отменить', inns_path, class: 'btn btn-default'
+    .col-md-3

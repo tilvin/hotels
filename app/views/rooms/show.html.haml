@@ -1,0 +1,33 @@
+.jumbotron
+  .row
+    .col-md-3
+      = image_tag 'room.jpg', size: "230"
+    .col-md-9
+      .row
+        .col-md-8
+          %h2= "Измайлово #{ @room.inn.name } Комната № #{ @room.number }"
+        .col-md-4{style: 'padding-top: 20px'}
+          - if @room.is_free
+            = link_to 'Забронировать', bookings_path(room: @room), method: :post, class: 'btn btn-success'
+          - else
+            - if can? :destroy, Booking
+              = link_to 'Снять бронь', booking_path(@room.bookings.last), method: :delete, class: 'btn btn-danger'
+            - else
+              = link_to 'Номер занят', '#', class: 'btn btn-danger', disabled: "disabled"
+      %p.lead.text-justify
+        Отель «Измайлово» предлагает к Вашим услугам комфортабельные номера различной категории: от уютного стандарта до элегантных люксов.
+        Шоколад и минеральная вода в каждом номере при заезде. Для вашего удобства бесплатно представляется меню подушек. На каждом этаже есть гладильная комната, а также кулер с горячей и холодной водой, который находится в комнате отдыха.
+
+.jumbotron
+  .comments-block
+    .comments
+      %ul.comment-list#comments
+        - @room.comments.each do |comment|
+          = render 'comments/comment', comment: comment
+
+    - if @room.bookings.find_by(user_id: current_user.id) || current_user.admin?
+      = render 'comments/form',  remote: true
+    = image_tag 'footer2.svg', width: "100%"
+
+
+
